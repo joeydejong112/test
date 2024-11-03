@@ -1,0 +1,155 @@
+cloud-architecture-diagram
+
+title System Architecture for RFID Project
+
+Subsystem [color: gray, icon: azure-devices] {
+    Embedded system [color: purple, icon: microchip] {
+        Hardware Integration [color: purple, icon: microchip] {
+            Wemos D1 Mini V4 [icon: microchip]
+        }
+        Sensors [color: purple, icon: microchip] {
+            RFID Reader (MFRC522) [icon: radio]
+            LED Green [icon: info]
+            LED Red [icon: info]
+            Piezo buzzer [icon: headphones]
+            Button [icon: info]
+        }
+        C++ arduino [color: purple, icon: arduino] {
+            RFID.INO [label: "RFID.INO", icon: arduino]
+        }
+        C++ arduino libraries [color: purple, icon: arduino] {
+            ESP8266WiFi library[label: "ESP8266WiFi library", icon: file-plus]
+            ESP8266WebServer library[label: "ESP8266WebServer library", icon: file-plus]
+            ESP8266HTTPClient library[label: "ESP8266HTTPClient library", icon: file-plus]
+            SPI library[label: "SPI library", icon: file-plus]
+            MFRC522 library[label: "MFRC522 library", icon: file-plus]
+            ArduinoJson library[label: "ArduinoJson library", icon: file-plus]
+        }
+    }
+    Database system [color: orange, icon: database] {
+        check [color: orange, icon: database] {
+            users_check [label: "users_check", icon: database]
+            check_in [label: "check_in", icon: database]
+            rfid_tag_temps [label: "rfid_tag_temps", icon: database]
+            log_book_check [label: "log_book_check", icon: database]
+        }
+    }
+    Web server [color: blue, icon: monitor] {
+        PHP 7 [label: "PHP 7", icon: php]
+        Frontend [color: blue, icon: monitor] {
+            HTML Files [icon: file-text] {
+                index.html [label: "index.html", icon: file-text]
+                register.html [label: "register.html", icon: file-text]
+                user.html [label: "user.html", icon: file-text]
+            }
+            JavaScript Files [icon: file-text] {
+                index.js [label: "index.js", icon: file-text]
+                user.js [label: "user.js", icon: file-text]
+                register.js [label: "register.js", icon: file-text]
+            }
+            CSS [icon: file-text] {
+                styles.css [label: "styles.css", icon: file-text]
+            }
+            Frontend libraries [icon: file-text] {
+                Bootstrap v5.3.3 [label: "Bootstrap v5.3.3", icon: file-text]
+                Chart.js [label: "Chart.js", icon: file-text]
+            }
+        }
+        Backend [color: green, icon: server, size: large] {
+            PHP API Scripts [icon: php] {
+                addUser.php [label: "addUser.php", icon: php]
+                allUsers.php [label: "allUsers.php", icon: php]
+                findTempRFIDTag.php [label: "findTempRFIDTag.php", icon: php]
+                deleteTempRFIDTag.php [label: "deleteTempRFIDTag.php", icon: php]
+                findRFID.php [label: "findRFID.php", icon: php]
+                getUserById.php [label: "getUserById.php", icon: php]
+                insertTempRFIDTag.php [label: "insertTempRFIDTag.php", icon: php]
+                updateCheck.php [label: "updateCheck.php", icon: php]
+            }
+            Database Connection Scripts [icon: php] {
+                db.php [label: "db.php", icon: php]
+            }
+        }
+    }
+    Docker host [color: gray, icon: docker] {
+        Docker network [icon: docker] {
+            Docker container [icon: aws-containers]
+        }
+    }
+}
+external system [icon: docker] {
+    Host devices [icon: ] {
+        Laptop [icon: azure-devices]
+        Server [icon: azure-devices]
+        MacBook [icon: azure-devices]
+    }
+
+    Host os [icon: ] {
+        Windows [icon: microsoft]
+        Linux [icon: linux]
+        Apple [icon: Apple]
+    }
+
+    Mobile Device [color: gray, icon: azure-devices] {
+        Device OS [icon: ] {
+            Android [icon: android]
+            IOS [icon: ios]
+        }
+        Browser [icon: ] {
+            Chrome [icon: chrome]
+            Edge [icon: edge]
+            Safari [icon: safari]
+        }
+    }
+  
+  Gitlab repository[label: "Gitlab repository", icon: gitlab]
+  Internet intranet[label: "Internet intranet", icon: cloud]
+    Docker registry [color: gray, icon: aws-elastic-container-registry] {
+        Docker image [icon: aws-ec2-image-builder] {
+            PHP Service [icon: php]
+            Nginx Service [icon: nginx]
+            MariaDB Service [icon: database]
+            phpMyAdmin [icon: database]
+            Tunnel Service [icon: network]
+        }
+    }
+}
+Network Access Point[label: "Network Access Point", icon: network]
+
+// Global Connections
+Backend > Frontend
+
+// Embedded Connections
+Sensors > Hardware Integration
+C++ arduino > Hardware Integration
+
+// Frontend Connections
+JavaScript Files <> Backend
+PHP 7 > Backend
+JavaScript Files > HTML Files
+CSS > HTML Files
+Frontend libraries > HTML Files
+
+// Backend Connections
+Database Connection Scripts > PHP API Scripts
+
+Browser > Device OS
+
+Docker host < Web server
+
+Database system <> Web server
+Embedded system <> Database system
+
+external system <> Subsystem
+Gitlab repository <> Docker registry
+
+Mobile Device > Docker registry
+Host devices > Docker registry
+
+
+external system <> Network Access Point
+C++ arduino < C++ arduino libraries
+Host devices < Host os
+Mobile Device <> Internet intranet
+Host devices <> Internet intranet
+
